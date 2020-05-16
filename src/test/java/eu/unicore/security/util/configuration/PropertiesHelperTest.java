@@ -25,8 +25,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
-import eu.emi.security.authn.x509.CrlCheckingMode;
-import eu.emi.security.authn.x509.ProxySupport;
 import eu.unicore.util.configuration.AsciidocFormatter;
 import eu.unicore.util.configuration.ConfigurationException;
 import eu.unicore.util.configuration.DocumentationReferenceMeta;
@@ -38,6 +36,8 @@ import eu.unicore.util.configuration.PropertyMD;
 
 public class PropertiesHelperTest
 {
+	private enum TestEnum {ALLOW, DENY}
+	
 	private static final Logger log = Logger.getLogger(PropertiesHelperTest.class);
 	
 	@DocumentationReferencePrefix
@@ -47,8 +47,8 @@ public class PropertiesHelperTest
 	private static final Map<String, PropertyMD> METADATA = new HashMap<String, PropertyMD>();
 	static 
 	{
-		METADATA.put("p01", new PropertyMD(ProxySupport.ALLOW));
-		METADATA.put("p02", new PropertyMD().setEnum(CrlCheckingMode.IF_VALID));
+		METADATA.put("p01", new PropertyMD(TestEnum.ALLOW));
+		METADATA.put("p02", new PropertyMD().setEnum(TestEnum.DENY));
 		METADATA.put("p03", new PropertyMD("600").setLong());
 		METADATA.put("p04", new PropertyMD("600"));
 		METADATA.put("p05", new PropertyMD("600").setMin(-222));
@@ -484,7 +484,7 @@ public class PropertiesHelperTest
 		try
 		{
 			PropertiesHelper helper = new PropertiesHelper(PREFIX, load(PROP), METADATA, log);
-			assertEquals(ProxySupport.DENY, helper.getEnumValue("p01", ProxySupport.class));
+			assertEquals(TestEnum.DENY, helper.getEnumValue("p01", TestEnum.class));
 		} catch (ConfigurationException e)
 		{
 			fail(e.toString());

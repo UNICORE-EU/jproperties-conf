@@ -24,7 +24,6 @@ import java.util.TreeSet;
 import org.apache.log4j.Logger;
 
 import eu.unicore.util.configuration.PropertyMD.Type;
-import eu.unicore.util.jetty.HttpServerProperties;
 
 /**
  * Provides methods to parse properties and return them as String, ints, longs, Files, arbitrary Enums 
@@ -73,9 +72,8 @@ import eu.unicore.util.jetty.HttpServerProperties;
  * have subkeys.
  * <p>
  * This class can be used in two ways: either as a helper class of a high-level configuration class,
- * which provides a custom interface to obtaining configuration data
- * or can be extended if the interface of this class is enough (as in the case of {@link HttpServerProperties}. 
- * The first solution is suggested when there are
+ * which provides a custom interface to obtaining configuration data or can be extended if the interface 
+ * of this class is enough. The first solution is suggested when there are
  * many complicated interconnections between properties or if high level objects should be returned for convenience.
  * <p>
  * If this class is extended, then the extending class should take care to properly check for its custom constraints,

@@ -1,34 +1,33 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>eu.unicore.security</groupId>
-	<artifactId>securityLibrary</artifactId>
+	<groupId>eu.unicore</groupId>
+	<artifactId>jproperties-conf</artifactId>
 	<packaging>jar</packaging>
-	<version>4.5.11-SNAPSHOT</version>
-	<name>securityLibrary</name>
+	<version>1.0.0-SNAPSHOT</version>
+	<description>App configuration framework based on Java Properties</description>
+	<name>jproperties-conf</name>
 
 	<properties>
-	  <jetty.version>9.4.28.v20200408</jetty.version>
-	  <slf.version>1.7.13</slf.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
 
-	<parent>
-		<groupId>eu.unicore</groupId>
-		<artifactId>unicore-parent</artifactId>
-		<version>1.22</version>
-	</parent>
-	
 	<scm>
 		<connection>scm:git://git.code.sf.net/p/unicore/securityLibrary</connection>
 		<developerConnection>scm:git:ssh://git.code.sf.net/p/unicore/securityLibrary</developerConnection>
-		<tag>securityLibrary-4.5.10</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<developers>
 		<developer>
 			<name>Krzysztof Benedyczak</name>
-			<organization>ICM Warsaw</organization>
-			<organizationUrl>http://www.icm.edu.pl</organizationUrl>
+			<organization>Bixbit</organization>
+			<organizationUrl>https://unity-idm.eu</organizationUrl>
 		</developer>
 		<developer>
 			<name>Bernd Schuller</name>
@@ -45,113 +44,16 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-		
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
+		</dependency>
+
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>apache-log4j-extras</artifactId>
-			<version>1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf.version}</version>
-		</dependency>
-
-		<!-- XMLBeans and samly2 are required only if you use classes from the 
-		         eu.unicore.security and eu.unicore.security.{consignor|etd|user} 
-		     packages.
-		     If you use them then you need the below dependencies. -->
- 		<dependency>
-			<groupId>org.apache.xmlbeans</groupId>
-			<artifactId>xmlbeans-jdk8</artifactId>
-			<version>2.6.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.woodstox</groupId>
-			<artifactId>woodstox-core</artifactId>
-			<version>5.1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>pl.edu.icm.saml</groupId>
-			<artifactId>samly2</artifactId>
-			<version>2.3.4</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.xmlbeans</groupId>
-					<artifactId>xmlbeans</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<!-- Jetty is required only if you use classes from the 
-		         eu.unicore.util.jetty 
-		     package.
-		     If you use them then you need Jetty on classpath as below. -->
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-servlet</artifactId>
-			<version>${jetty.version}</version>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-servlets</artifactId>
-			<version>${jetty.version}</version>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-rewrite</artifactId>
-			<version>${jetty.version}</version>
-			<optional>true</optional>
-		</dependency>
-		
-		<!-- commons-httpclient is required only if you use classes from the 
-		         eu.unicore.util.httpclient 
-		     package.
-		     If you use them then you need the below dependency. 
-		-->
-		<dependency>
-		 	<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5.3</version>
-			<optional>true</optional>
+			<version>1.2.17</version>
 		</dependency>
 	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>unicore.eu</id>
-			<name>UNICORE repository</name>
-			<url>https://unicore-dev.zam.kfa-juelich.de/maven</url>
-		</repository>
-	</repositories>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.22.2</version>
-				<configuration>
-				  <forkCount>1</forkCount>
-				  <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 </project>
