@@ -75,7 +75,7 @@ public class PropertyGroupHelper {
 	}
 	
 	/**
-	 * returns an iterator over the valid keys
+	 * @return an iterator over the valid keys
 	 */
 	public Iterator<String> keys()
 	{
@@ -159,8 +159,6 @@ public class PropertyGroupHelper {
 	
 	/**
 	 * gets the properties whose keys match the accepted patterns
-	 * 
-	 * @return a map
 	 */
 	public Map<String,String>getFilteredMap(){
 		return getFilteredMap(null);
@@ -169,11 +167,8 @@ public class PropertyGroupHelper {
 	/**
 	 * gets the properties whose keys match the accepted patterns AND
 	 * whose keys contain the supplied string
-	 * 
-	 * @param containedString
-	 * @return a map
 	 */
-	public Map<String,String>getFilteredMap(String containedString){
+	public Map<String,String> getFilteredMap(String containedString){
 		Map<String, String> props=new HashMap<String, String>();
 		Iterator<String>keys=keys();
 		while(keys.hasNext()){

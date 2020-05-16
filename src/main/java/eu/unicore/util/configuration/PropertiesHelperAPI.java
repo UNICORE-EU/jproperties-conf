@@ -27,8 +27,6 @@ public interface PropertiesHelperAPI
 	void removePropertyChangeListener(PropertyChangeListener listener);
 
 	/**
-	 * 
-	 * @param key
 	 * @return string with a full name of the key and its description if set.
 	 */
 	String getKeyDescription(String key);
@@ -50,9 +48,6 @@ public interface PropertiesHelperAPI
 	 * Returns the value of name key as a provided enum class instance. Important: mapping of string
 	 * value to enum label is done in case insensitive way. Therefore if your enum constants differ
 	 * only in case, do not use this method.
-	 * @param name
-	 * @param type
-	 * @throws ConfigurationException
 	 */
 	<T extends Enum<T>> T getEnumValue(String name, Class<T> type)
 			throws ConfigurationException;
@@ -66,14 +61,13 @@ public interface PropertiesHelperAPI
 	/**
 	 * Returns a property value interpreted as a {@link File}. 
 	 * The file must exist and must be readable.
-	 * @param name
 	 * @param isDirectory whether the File must be a directory (true) or a plain file (false)
-	 * @throws ConfigurationException
 	 */
 	File getFileValue(String name, boolean isDirectory) throws ConfigurationException;
 
 	/**
-	 * Gets a property that can be defined with a subkey.<br/> 
+	 * Gets a property that can be defined with a subkey.
+	 * <p> 
 	 * As primary fallback, gets the "general" property. 
 	 * Thus, the lookup sequence to find the property is:
 	 * <ul>
@@ -90,29 +84,21 @@ public interface PropertiesHelperAPI
 
 	/**
 	 * @see #getSubkeyValue(String, String)
-	 * @param key
-	 * @param subKey
 	 */
 	Boolean getSubkeyBooleanValue(String key, String subKey);
 
 	/**
 	 * @see #getSubkeyValue(String, String)
-	 * @param key
-	 * @param subKey
 	 */
 	Integer getSubkeyIntValue(String key, String subKey);
 
 	/**
 	 * @see #getSubkeyValue(String, String)
-	 * @param key
-	 * @param subKey
 	 */
 	Long getSubkeyLongValue(String key, String subKey);
 
 	/**
 	 * @see #getSubkeyValue(String, String)
-	 * @param key
-	 * @param subKey
 	 */
 	<T extends Enum<T>> T getSubkeyEnumValue(String key, String subKey, Class<T> type);
 
@@ -120,8 +106,6 @@ public interface PropertiesHelperAPI
 	 * Returns a string value which can be localized. It is assumed that the given key can have subkeys.
 	 * A 'key.language_country' alue is returned if present. If not then the 'key.language'. If it is also
 	 * absent then the {@link #getValue(String)} is used.
-	 * @param key
-	 * @param locale
 	 */
 	String getLocalizedValue(String key, Locale locale);
 
@@ -144,7 +128,6 @@ public interface PropertiesHelperAPI
 	List<String> getListOfValues(String prefix2);
 
 	/**
-	 * @param listKey
 	 * @return list of keys defined for the structured list. The returned keys can be iterated and
 	 * glued with an actual interesting parameter which is a member of this structured list.
 	 */

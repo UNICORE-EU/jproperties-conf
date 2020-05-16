@@ -123,8 +123,6 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 	/**
 	 * Cloning constructor. Fast: no initialization checks are performed. Metadata is copied by reference(!).
 	 * Listeners are not copied.
-	 * @param source
-	 * @throws ConfigurationException
 	 */
 	protected PropertiesHelper(PropertiesHelper source)
 	{
@@ -292,7 +290,6 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 	/**
 	 * Checks if new properties are correct.
 	 * @param properties properties to be checked.
-	 * @throws ConfigurationException
 	 */
 	protected void checkConstraints(Properties properties)
 	{
@@ -317,7 +314,6 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 	
 	/**
 	 * Checks if the properties set to this object are correct.
-	 * @throws ConfigurationException
 	 */
 	protected void checkConstraints()
 	{
@@ -528,8 +524,6 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 	 * For regular entries returns the argument. For entries where propertyKey is something from a list 
 	 * or entry with subkeys, the real entry key is returned. Similarly for the structured list - the structured
 	 * list entry is returned. 
-	 * 
-	 * @param propertyKey
 	 */
 	protected String getMetadataKey(String propertyKey)
 	{
@@ -569,8 +563,6 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 	}
 
 	/**
-	 * 
-	 * @param key
 	 * @return string with a full name of the key and its description if set.
 	 */
 	@Override
@@ -763,9 +755,6 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 	 * Returns the value of name key as a provided enum class instance. Important: mapping of string
 	 * value to enum label is done in case insensitive way. Therefore if your enum constants differ
 	 * only in case, do not use this method.
-	 * @param name
-	 * @param type
-	 * @throws ConfigurationException
 	 */
 	@Override
 	public <T extends Enum<T>> T getEnumValue(String name, Class<T> type) throws ConfigurationException
@@ -801,9 +790,7 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 	/**
 	 * Returns a property value interpreted as a {@link File}. 
 	 * The file must exist and must be readable.
-	 * @param name
 	 * @param isDirectory whether the File must be a directory (true) or a plain file (false)
-	 * @throws ConfigurationException
 	 */
 	@Override
 	public File getFileValue(String name, boolean isDirectory) 
@@ -831,7 +818,8 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 	}
 
 	/**
-	 * Gets a property that can be defined with a subkey.<br/> 
+	 * Gets a property that can be defined with a subkey.
+	 * <p>
 	 * As primary fallback, gets the "general" property. 
 	 * Thus, the lookup sequence to find the property is:
 	 * <ul>
@@ -854,8 +842,6 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 
 	/**
 	 * @see #getSubkeyValue(String, String)
-	 * @param key
-	 * @param subKey
 	 */
 	@Override
 	public Boolean getSubkeyBooleanValue(String key, String subKey) {
@@ -867,8 +853,6 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 
 	/**
 	 * @see #getSubkeyValue(String, String)
-	 * @param key
-	 * @param subKey
 	 */
 	@Override
 	public Integer getSubkeyIntValue(String key, String subKey) {
@@ -880,8 +864,6 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 	
 	/**
 	 * @see #getSubkeyValue(String, String)
-	 * @param key
-	 * @param subKey
 	 */
 	@Override
 	public Long getSubkeyLongValue(String key, String subKey) {
@@ -893,8 +875,6 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 	
 	/**
 	 * @see #getSubkeyValue(String, String)
-	 * @param key
-	 * @param subKey
 	 */
 	@Override
 	public <T extends Enum<T>> T getSubkeyEnumValue(String key, String subKey, Class<T> type) {
@@ -908,8 +888,6 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 	 * Returns a string value which can be localized. It is assumed that the given key can have subkeys.
 	 * A 'key.language_country' alue is returned if present. If not then the 'key.language'. If it is also
 	 * absent then the {@link #getValue(String)} is used.
-	 * @param key
-	 * @param locale
 	 */
 	@Override
 	public String getLocalizedValue(String key, Locale locale)
@@ -1033,7 +1011,6 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 	}
 	
 	/**
-	 * @param listKey
 	 * @return list of keys defined for the structured list. The returned keys can be iterated and
 	 * glued with an actual interesting parameter which is a member of this structured list.
 	 */

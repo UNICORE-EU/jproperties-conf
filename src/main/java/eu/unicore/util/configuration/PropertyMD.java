@@ -44,7 +44,6 @@ public class PropertyMD implements Cloneable
 	 * The property type will be guessed in that order: int, long, float, boolean. If the default 
 	 * value can not be mapped to any of those types, the type will be String. The type can be later
 	 * freely changed, but default value must be of the type set. 
-	 * @param defaultValue
 	 */
 	public PropertyMD(String defaultValue) {
 		this.defaultValue = defaultValue;
@@ -78,7 +77,6 @@ public class PropertyMD implements Cloneable
 	
 	/**
 	 * Creates a property of enum type with a desired enum default value.
-	 * @param defaultValue
 	 */
 	public <T extends Enum<T>> PropertyMD(T defaultValue) {
 		enumTypeInstance = defaultValue;
@@ -227,7 +225,6 @@ public class PropertyMD implements Cloneable
 	/**
 	 * Sets enum type. Note that the value passed as argument doesn't matter, it
 	 * must be only of the proper enum, which shall make an enum type of the property.
-	 * @param defaultValue
 	 */
 	public <T extends Enum<T>> PropertyMD setEnum(T defaultValue) {
 		enumTypeInstance = defaultValue;
@@ -486,7 +483,6 @@ public class PropertyMD implements Cloneable
 
 	/**
 	 * Defines documentation category, options are grouped in categories.
-	 * @author K. Benedyczak
 	 */
 	public static class DocumentationCategory implements Comparable<DocumentationCategory> {
 		private String name;
