@@ -20,3 +20,5 @@ Most important features:
 This library was previously part of UNICORE eu.unicore.security:securityLibrary module (up to its version 4.x inclusive). 
 It was moved to a separate repository and maven module, preserving source code package but the group and artifact id
 were changed to the current ones.
+
+Technically this GIT repository was cloned from the securityLibrary and then the non-configuration code removed, so that a complete code history can be tracked here.
