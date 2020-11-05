@@ -22,7 +22,8 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.junit.Test;
 
 import eu.unicore.util.configuration.AsciidocFormatter;
@@ -38,7 +39,7 @@ public class PropertiesHelperTest
 {
 	private enum TestEnum {ALLOW, DENY}
 	
-	private static final Logger log = Logger.getLogger(PropertiesHelperTest.class);
+	private static final Logger log = LogManager.getLogger(PropertiesHelperTest.class);
 	
 	@DocumentationReferencePrefix
 	private static final String PREFIX = "prefix.";

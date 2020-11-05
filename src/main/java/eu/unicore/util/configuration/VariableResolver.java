@@ -7,7 +7,7 @@ package eu.unicore.util.configuration;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Maintains a list of defined variables and allow for resolving them.

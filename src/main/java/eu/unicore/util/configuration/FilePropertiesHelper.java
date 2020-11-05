@@ -12,8 +12,7 @@ import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.Logger;
 
 /**
  * Extension of the PropertiesHelper, adding file backing (with reloading support).
