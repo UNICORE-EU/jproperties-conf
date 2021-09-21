@@ -1,14 +1,14 @@
 package eu.unicore.security.util.configuration;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import eu.unicore.util.configuration.PropertyGroupHelper;
@@ -64,9 +64,9 @@ public class TestPropertyGroupHelper {
 		while (i.hasNext())
 		{
 			c++;
-			assertThat(i.next().startsWith("g2."), is(true));
+			assertThat(i.next().startsWith("g2."), CoreMatchers.is(true));
 		}
-		assertThat(c, is(2000));
+		assertThat(c, CoreMatchers.is(2000));
 	}
 	
 }

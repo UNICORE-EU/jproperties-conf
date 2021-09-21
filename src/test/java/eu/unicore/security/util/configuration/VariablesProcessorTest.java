@@ -5,16 +5,15 @@
 package eu.unicore.security.util.configuration;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.Properties;
 
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-
+import org.apache.logging.log4j.Logger;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import eu.unicore.util.configuration.ConfigurationException;
@@ -33,7 +32,7 @@ public class VariablesProcessorTest
 		
 		Properties processed = VariablesProcessor.process(props, log);
 		
-		assertThat(processed.getProperty("p"), is("someDynamicValue"));
+		assertThat(processed.getProperty("p"), CoreMatchers.is("someDynamicValue"));
 	}
 
 	@Test
@@ -60,7 +59,7 @@ public class VariablesProcessorTest
 		
 		Properties processed = VariablesProcessor.process(props, log);
 		
-		assertThat(processed.getProperty("p"), is("some" + 
+		assertThat(processed.getProperty("p"), CoreMatchers.is("some" + 
 				System.getProperty("java.version") + "Value"));
 	}
 
@@ -73,7 +72,7 @@ public class VariablesProcessorTest
 		
 		Properties processed = VariablesProcessor.process(props, log);
 		
-		assertThat(processed.getProperty("p"), is("some" + 
+		assertThat(processed.getProperty("p"), CoreMatchers.is("some" + 
 				System.getProperty("java.version") + "Value"));
 	}
 	
@@ -87,7 +86,7 @@ public class VariablesProcessorTest
 		
 		Properties processed = VariablesProcessor.process(props, log);
 		
-		assertThat(processed.getProperty("p"), is("some" + 
+		assertThat(processed.getProperty("p"), CoreMatchers.is("some" + 
 				System.getenv(firstEnvVar) + "Value"));
 	}
 

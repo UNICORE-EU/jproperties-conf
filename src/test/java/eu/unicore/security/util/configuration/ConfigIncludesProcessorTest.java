@@ -5,15 +5,15 @@
 package eu.unicore.security.util.configuration;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.Properties;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import eu.unicore.util.configuration.ConfigIncludesProcessor;
@@ -31,10 +31,10 @@ public class ConfigIncludesProcessorTest
 				"src/test/resources/props/base.properties");
 		ret = ConfigIncludesProcessor.preprocess(ret, log); 
 		
-		assertThat(ret.getProperty("regular.property"), is("value1"));
-		assertThat(ret.getProperty("regular.property2"), is("value2"));
-		assertThat(ret.getProperty("regular.property3"), is("value3"));
-		assertThat(ret.size(), is(3));
+		assertThat(ret.getProperty("regular.property"), CoreMatchers.is("value1"));
+		assertThat(ret.getProperty("regular.property2"), CoreMatchers.is("value2"));
+		assertThat(ret.getProperty("regular.property3"), CoreMatchers.is("value3"));
+		assertThat(ret.size(), CoreMatchers.is(3));
 	}
 
 	@Test
@@ -44,10 +44,10 @@ public class ConfigIncludesProcessorTest
 				"src/test/resources/props/baseWithVars.properties");
 		ret = ConfigIncludesProcessor.preprocess(ret, log); 
 		
-		assertThat(ret.getProperty("regular.property"), is("value1"));
-		assertThat(ret.getProperty("regular.property2"), is("value2"));
-		assertThat(ret.getProperty("regular.property3"), is("Dynamic"));
-		assertThat(ret.size(), is(3));
+		assertThat(ret.getProperty("regular.property"), CoreMatchers.is("value1"));
+		assertThat(ret.getProperty("regular.property2"), CoreMatchers.is("value2"));
+		assertThat(ret.getProperty("regular.property3"), CoreMatchers.is("Dynamic"));
+		assertThat(ret.size(), CoreMatchers.is(3));
 	}
 	
 	@Test

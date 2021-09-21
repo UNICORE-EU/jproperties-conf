@@ -4,9 +4,8 @@
  */
 package eu.unicore.security.util.configuration;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -22,8 +21,9 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import eu.unicore.util.configuration.AsciidocFormatter;
@@ -34,6 +34,7 @@ import eu.unicore.util.configuration.FilePropertiesHelper;
 import eu.unicore.util.configuration.PropertiesHelper;
 import eu.unicore.util.configuration.PropertyChangeListener;
 import eu.unicore.util.configuration.PropertyMD;
+import eu.unicore.util.configuration.RSTFormatter;
 
 public class PropertiesHelperTest
 {
@@ -82,9 +83,9 @@ public class PropertiesHelperTest
 				FilePropertiesHelper.load("src/test/resources/props/base.properties"), 
 				META, log);
 		
-		assertThat(tested.getValue("property"), is("value1"));
-		assertThat(tested.getValue("property2"), is("value2"));
-		assertThat(tested.getValue("property3"), is("value3"));
+		assertThat(tested.getValue("property"), CoreMatchers.is("value1"));
+		assertThat(tested.getValue("property2"), CoreMatchers.is("value2"));
+		assertThat(tested.getValue("property3"), CoreMatchers.is("value3"));
 	}
 	
 	@Test
@@ -99,7 +100,7 @@ public class PropertiesHelperTest
 		
 		PropertiesHelper tested = new PropertiesHelper("regular.", props, META, log);
 		
-		assertThat(tested.getValue("p1"), is("someDynamicValue"));
+		assertThat(tested.getValue("p1"), CoreMatchers.is("someDynamicValue"));
 	}
 	
 	@Test
@@ -600,5 +601,21 @@ public class PropertiesHelperTest
 			e.printStackTrace();
 			fail(e.toString());
 		}
+	}	
+	
+	@Test
+	public void testRSTReference()
+	{
+		RSTFormatter formatter = new RSTFormatter();
+		System.out.println(formatter.format(PREFIX, METADATA));
+	}
+	
+	@Test
+	public void testReflection2() throws Exception
+	{
+		File f = new File("target/generated-doc.txt");
+		f.delete();
+		AsciidocFormatter.main("target", PropertiesHelperTest.class.getName()+"|"+f.getName());
+		assertTrue(f.exists());
 	}	
 }
