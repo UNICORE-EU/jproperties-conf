@@ -15,10 +15,10 @@ import eu.unicore.util.configuration.PropertyMD.DocumentationCategory;
 import eu.unicore.util.configuration.PropertyMD.Type;
 
 /**
- * Generates table with properties info in RST format
+ * Generates properties info in CSV format
  * @author schuller
  */
-public class RSTFormatter implements HelpFormatter
+public class CSVFormatter implements HelpFormatter
 {
 	@Override
 	public String format(String pfx, Map<String, PropertyMD> metadata)
@@ -27,7 +27,7 @@ public class RSTFormatter implements HelpFormatter
 			return "";
 		
 		Set<String> keys = metadata.keySet();
-		Map<DocumentationCategory, Set<String>> keysInCats = new HashMap<DocumentationCategory, Set<String>>();
+		Map<DocumentationCategory, Set<String>> keysInCats = new HashMap<>();
 		for (String key: keys)
 		{
 			PropertyMD meta = metadata.get(key);
@@ -35,40 +35,24 @@ public class RSTFormatter implements HelpFormatter
 			Set<String> current = keysInCats.get(cat);
 			if (current == null)
 			{
-				current = new TreeSet<String>();
+				current = new TreeSet<>();
 				keysInCats.put(cat, current);
 			}
-			
 			current.add(meta.getSortKey() != null ? meta.getSortKey() + "-_-_-"+key : key);
 		}
-		
-		
 		StringBuilder ret = new StringBuilder();
-		ret.append("  .. list-table:: \n");
-		ret.append("     :widths: 30 20 15 35 \n");
-		ret.append("     :header-rows: 1 \n");
-		ret.append("     \n");
-		
-		ret.append("     * - Property name \n");
-		ret.append("       - Type \n");
-		ret.append("       - Default / mandatory \n");
-		ret.append("       - Description \n");
-		
+		// header line
+		ret.append("Property name,Type, Default value \\/ mandatory,Description\n");
 		Set<String> noCat = keysInCats.remove(null);
-		if (noCat != null)
+		if (noCat != null) {
 			ret.append(formatCategory(noCat, pfx, metadata));
-		
-		Set<DocumentationCategory> catsSet = new TreeSet<DocumentationCategory>(keysInCats.keySet());
+		}
+		Set<DocumentationCategory> catsSet = new TreeSet<>(keysInCats.keySet());
 		for (DocumentationCategory cat: catsSet)
 		{
-			ret.append("     * - " + cat.getName() + " \n");
-			ret.append("       - \n");
-			ret.append("       - \n");
-			ret.append("       - \n");
-			
+			ret.append("*").append(cat.getName()).append("*,,,\n");
 			ret.append(formatCategory(keysInCats.get(cat), pfx, metadata));
 		}
-		
 		return ret.toString();
 	}
 	
@@ -85,7 +69,6 @@ public class RSTFormatter implements HelpFormatter
 				continue;
 
 			// property name
-			ret.append("     * - ");
 			if (!md.isStructuredListEntry())
 				ret.append(pfx).append(key);
 			else
@@ -94,45 +77,41 @@ public class RSTFormatter implements HelpFormatter
 				String listKey = listMeta.numericalListKeys() ? "<NUMBER>." : "*.";
 				ret.append(pfx + md.getStructuredListEntryId() + listKey + key);
 			}
-			ret.append(" \n");
+			ret.append(",");
 
 			// type
-			ret.append("       - ");
+			ret.append("\"");
 			if (md.getType() == Type.LIST || md.getType() == Type.STRUCTURED_LIST)
-				ret.append(md.numericalListKeys() ? "<NUMBER> " : "* ");
+				ret.append(md.numericalListKeys() ? "<NUMBER> " : "\\* ");
 			if (md.canHaveSubkeys())
-				ret.append(".* ");
-			//ret.append("``").
+				ret.append(".\\* ");
 			ret.append(md.getTypeDescription());
-			//ret.append("``");
 			if (md.canHaveSubkeys())
 				ret.append(" *can have subkeys*");
-			ret.append(" \n");
+			ret.append("\",");
 			
 			// default
-			ret.append("       - ");
+			ret.append("\"");
 			if (md.isMandatory())
-				ret.append(" *mandatory to be set* ");
+				ret.append(" *mandatory* ");
 			else if (md.hasDefault())
 			{
-				if (md.getDefault() == null)
-					ret.append("_not set_|");
-				else if (md.getDefault().equals(""))
-					ret.append("_empty string_|");
+				if (md.getDefault()!=null && md.getDefault().equals(""))
+					ret.append("*empty string*");
 				else
-					ret.append("``" + md.getDefault() +"``");
+					ret.append(md.getDefault());
 			}
-			ret.append(" \n");
+			ret.append("\",");
 			
 			// description
-			ret.append("       - ");
+			ret.append("\"");
 			String desc = md.getDescription();
 			if (desc == null)
 				desc = " ";
 			ret.append(desc);
 			if (md.isUpdateable())
-				ret.append(" _(runtime updateable)_");
-			ret.append(" \n");
+				ret.append("(runtime updateable)");
+			ret.append("\"\n");
 		}
 		return ret.toString();
 	}
@@ -179,7 +158,7 @@ public class RSTFormatter implements HelpFormatter
 	public static void processFile(String folder, String clazzName, String destination, String prefix) throws Exception
 	{
 		System.out.println("Generating from: " + clazzName + " to " + destination + " prefix: " + prefix);
-		ClassLoader loader = RSTFormatter.class.getClassLoader();
+		ClassLoader loader = CSVFormatter.class.getClassLoader();
 		Class<?> clazz = loader.loadClass(clazzName);
 		
 		
@@ -193,7 +172,7 @@ public class RSTFormatter implements HelpFormatter
 		@SuppressWarnings("unchecked")
 		Map<String, PropertyMD> meta = (Map<String, PropertyMD>) fMeta.get(null);
 
-		RSTFormatter formatter = new RSTFormatter();
+		CSVFormatter formatter = new CSVFormatter();
 		String result = formatter.format(prefix, meta);
 		BufferedWriter w = new BufferedWriter(new FileWriter(new File(folder, destination)));
 		w.write(result);

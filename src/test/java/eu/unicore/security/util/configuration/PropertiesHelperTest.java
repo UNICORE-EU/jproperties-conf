@@ -27,6 +27,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import eu.unicore.util.configuration.AsciidocFormatter;
+import eu.unicore.util.configuration.CSVFormatter;
 import eu.unicore.util.configuration.ConfigurationException;
 import eu.unicore.util.configuration.DocumentationReferenceMeta;
 import eu.unicore.util.configuration.DocumentationReferencePrefix;
@@ -34,7 +35,6 @@ import eu.unicore.util.configuration.FilePropertiesHelper;
 import eu.unicore.util.configuration.PropertiesHelper;
 import eu.unicore.util.configuration.PropertyChangeListener;
 import eu.unicore.util.configuration.PropertyMD;
-import eu.unicore.util.configuration.RSTFormatter;
 
 public class PropertiesHelperTest
 {
@@ -604,9 +604,9 @@ public class PropertiesHelperTest
 	}	
 	
 	@Test
-	public void testRSTReference()
+	public void testCSVReference()
 	{
-		RSTFormatter formatter = new RSTFormatter();
+		CSVFormatter formatter = new CSVFormatter();
 		System.out.println(formatter.format(PREFIX, METADATA));
 	}
 	
@@ -615,7 +615,7 @@ public class PropertiesHelperTest
 	{
 		File f = new File("target/generated-doc.txt");
 		f.delete();
-		AsciidocFormatter.main("target", PropertiesHelperTest.class.getName()+"|"+f.getName());
+		CSVFormatter.main("target", PropertiesHelperTest.class.getName()+"|"+f.getName());
 		assertTrue(f.exists());
 	}	
 }
