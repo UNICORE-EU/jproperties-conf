@@ -15,7 +15,9 @@ import eu.unicore.util.configuration.PropertyMD.DocumentationCategory;
 import eu.unicore.util.configuration.PropertyMD.Type;
 
 /**
- * Generates properties info in CSV format
+ * Generates properties info in CSV format.
+ * Intended for use with Sphinx.
+ * 
  * @author schuller
  */
 public class CSVFormatter implements HelpFormatter
@@ -50,11 +52,13 @@ public class CSVFormatter implements HelpFormatter
 		Set<DocumentationCategory> catsSet = new TreeSet<>(keysInCats.keySet());
 		for (DocumentationCategory cat: catsSet)
 		{
-			ret.append("*").append(cat.getName()).append("*,,,\n");
+			//ret.append("*").append(cat.getName()).append("*,,,\n");
 			ret.append(formatCategory(keysInCats.get(cat), pfx, metadata));
 		}
 		return ret.toString();
 	}
+	
+	private String[] mustEscape = new String[] { "http:", "https:", "jdbc:", "file:", "*"};
 	
 	private String formatCategory(Set<String> keys, String pfx, Map<String, PropertyMD> metadata)
 	{
@@ -69,25 +73,28 @@ public class CSVFormatter implements HelpFormatter
 				continue;
 
 			// property name
+			ret.append("\"");
 			if (!md.isStructuredListEntry())
 				ret.append(pfx).append(key);
 			else
 			{
 				PropertyMD listMeta = metadata.get(md.getStructuredListEntryId());
-				String listKey = listMeta.numericalListKeys() ? "<NUMBER>." : "*.";
+				String listKey = listMeta.numericalListKeys() ? "<NUMBER>." : "\\*.";
 				ret.append(pfx + md.getStructuredListEntryId() + listKey + key);
 			}
-			ret.append(",");
 
-			// type
-			ret.append("\"");
 			if (md.getType() == Type.LIST || md.getType() == Type.STRUCTURED_LIST)
 				ret.append(md.numericalListKeys() ? "<NUMBER> " : "\\* ");
 			if (md.canHaveSubkeys())
 				ret.append(".\\* ");
+
+			ret.append("\",");
+			
+			// type
+			ret.append("\"");
 			ret.append(md.getTypeDescription());
 			if (md.canHaveSubkeys())
-				ret.append(" *can have subkeys*");
+				ret.append(" *can have subkeys* ");
 			ret.append("\",");
 			
 			// default
@@ -98,8 +105,17 @@ public class CSVFormatter implements HelpFormatter
 			{
 				if (md.getDefault()!=null && md.getDefault().equals(""))
 					ret.append("*empty string*");
-				else
-					ret.append(md.getDefault());
+				else {
+					String value = md.getDefault();
+					if(value!=null) {
+						for (String x: mustEscape) {
+							if(value.startsWith(x) || value.equals(x)) {
+								ret.append("\\");
+							}
+						}
+					}
+					ret.append(value);	
+				}
 			}
 			ret.append("\",");
 			
