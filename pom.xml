@@ -4,7 +4,7 @@
   <groupId>eu.unicore</groupId>
   <artifactId>jproperties-conf</artifactId>
   <packaging>jar</packaging>
-  <version>1.1.3</version>
+  <version>1.1.4-SNAPSHOT</version>
   <description>App configuration framework based on Java Properties</description>
   <name>jproperties-conf</name>
   <url>https://github.com/UNICORE-EU/jproperties-conf</url>
@@ -20,7 +20,7 @@
     <connection>scm:git:git://github.com/UNICORE-EU/jproperties-conf.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/UNICORE-EU/jproperties-conf.git</developerConnection>
     <url>https://github.com/UNICORE-EU/jproperties-conf</url>
-    <tag>jproperties-conf-1.1.3</tag>
+    <tag>HEAD</tag>
   </scm>
   <licenses>
     <license>
