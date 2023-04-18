@@ -2,7 +2,7 @@
  * Copyright (c) 2017 ICM Uniwersytet Warszawski All rights reserved.
  * See LICENCE.txt file for licensing information.
  */
-package eu.unicore.security.util.configuration;
+package eu.unicore.util.configuration;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
