@@ -11,8 +11,6 @@ import java.util.Map;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
-import eu.unicore.util.configuration.PropertyGroupHelper;
-
 public class TestPropertyGroupHelper {
 
 	@Test

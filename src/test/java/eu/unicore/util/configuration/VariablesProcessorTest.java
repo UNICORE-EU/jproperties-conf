@@ -16,9 +16,6 @@ import org.apache.logging.log4j.Logger;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
-import eu.unicore.util.configuration.ConfigurationException;
-import eu.unicore.util.configuration.VariablesProcessor;
-
 public class VariablesProcessorTest
 {
 	private static final Logger log = LogManager.getLogger(VariablesProcessorTest.class);

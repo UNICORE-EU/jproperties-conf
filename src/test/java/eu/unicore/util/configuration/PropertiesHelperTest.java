@@ -26,16 +26,6 @@ import org.apache.logging.log4j.Logger;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
-import eu.unicore.util.configuration.AsciidocFormatter;
-import eu.unicore.util.configuration.CSVFormatter;
-import eu.unicore.util.configuration.ConfigurationException;
-import eu.unicore.util.configuration.DocumentationReferenceMeta;
-import eu.unicore.util.configuration.DocumentationReferencePrefix;
-import eu.unicore.util.configuration.FilePropertiesHelper;
-import eu.unicore.util.configuration.PropertiesHelper;
-import eu.unicore.util.configuration.PropertyChangeListener;
-import eu.unicore.util.configuration.PropertyMD;
-
 public class PropertiesHelperTest
 {
 	private enum TestEnum {ALLOW, DENY}
