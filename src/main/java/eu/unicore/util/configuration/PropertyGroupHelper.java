@@ -35,6 +35,7 @@ package eu.unicore.util.configuration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 import java.util.regex.Pattern;
 
 /**
@@ -169,19 +170,25 @@ public class PropertyGroupHelper {
 	 * whose keys contain the supplied string
 	 */
 	public Map<String,String> getFilteredMap(String containedString){
-		Map<String, String> props=new HashMap<String, String>();
+		Map<String, String> props = new HashMap<>();
 		Iterator<String>keys=keys();
 		while(keys.hasNext()){
 			String key=keys.next();
 			if(containedString==null){
 				props.put(key, String.valueOf(properties.get(key)));
-				continue;
 			}
-			if(key.contains(containedString)){
+			else if(key.contains(containedString)){
 				props.put(key, String.valueOf(properties.get(key)));	
 			}
 		}
 		return props;
 	}
 
+	public static Map<String,String> asMap(Properties p) {
+		Map<String, String> res = new HashMap<>();
+		for(Object k: p.keySet()) {
+			res.put(String.valueOf(k), String.valueOf(p.get(k)));
+		}
+		return res;
+	}
 }

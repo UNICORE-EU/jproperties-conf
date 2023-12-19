@@ -71,10 +71,10 @@ public class WrappingFilePropertiesHelper implements Runnable
 			reloadIfChanged();
 		} catch (ConfigurationException e)
 		{
-			wrapped.getLoger().warn("The reloaded configuration is invalid: " + e.getMessage(), e);
+			wrapped.getLogger().warn("The reloaded configuration is invalid: " + e.getMessage(), e);
 		} catch (IOException e)
 		{
-			wrapped.getLoger().warn("Can't re-read the configuration file " + file + 
+			wrapped.getLogger().warn("Can't re-read the configuration file " + file + 
 					": " + e.getMessage(), e);
 		}
 	}

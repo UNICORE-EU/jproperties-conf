@@ -6,6 +6,7 @@ package eu.unicore.util.configuration;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -36,7 +37,7 @@ public class PropertiesHelperTest
 	private static final String PREFIX = "prefix.";
 	
 	@DocumentationReferenceMeta
-	private static final Map<String, PropertyMD> METADATA = new HashMap<String, PropertyMD>();
+	private static final Map<String, PropertyMD> METADATA = new HashMap<>();
 	static 
 	{
 		METADATA.put("p01", new PropertyMD(TestEnum.ALLOW));
@@ -64,7 +65,7 @@ public class PropertiesHelperTest
 	@Test
 	public void shouldIncludeIncludedProperties() throws IOException
 	{
-		Map<String, PropertyMD> META = new HashMap<String, PropertyMD>();
+		Map<String, PropertyMD> META = new HashMap<>();
 		META.put("property", new PropertyMD());
 		META.put("property2", new PropertyMD());
 		META.put("property3", new PropertyMD());
@@ -81,7 +82,7 @@ public class PropertiesHelperTest
 	@Test
 	public void shouldResolveVariables() throws IOException
 	{
-		Map<String, PropertyMD> META = new HashMap<String, PropertyMD>();
+		Map<String, PropertyMD> META = new HashMap<>();
 		META.put("p1", new PropertyMD());
 		
 		Properties props = new Properties();
@@ -122,7 +123,7 @@ public class PropertiesHelperTest
 	@Test
 	public void testListKeys()
 	{
-		Map<String, PropertyMD> meta = new HashMap<String, PropertyMD>();
+		Map<String, PropertyMD> meta = new HashMap<>();
 		meta.put("l1.", new PropertyMD().setStructuredList(true));
 		meta.put("a", new PropertyMD().setStructuredListEntry("l1."));
 		meta.put("l2.", new PropertyMD().setStructuredList(false));
@@ -310,55 +311,55 @@ public class PropertiesHelperTest
 		helper.addPropertyChangeListener(l2);
 		
 		helper.setProperties(p);
-		assertEquals(1, global);
+		assertEquals(0, global); // no changes!
 		assertEquals(0, focused);
 		
 		helper.setProperty("p09", "new");
-		assertEquals(2, global);
+		assertEquals(1, global);
 		assertEquals(0, focused);
 		
 		helper.setProperty("p12", "viola");
-		assertEquals(3, global);
+		assertEquals(2, global);
 		assertEquals(0, focused);
 
 		helper.setProperty("p12", null);
-		assertEquals(4, global);
+		assertEquals(3, global);
 		assertEquals(1, focused);
 
 		helper.setProperty("p12", "viola");
-		assertEquals(5, global);
+		assertEquals(4, global);
 		assertEquals(2, focused);
 		
 		helper.removePropertyChangeListener(l1);
 		helper.removePropertyChangeListener(l2);
 		
 		helper.setProperty("p12", "new");
-		assertEquals(5, global);
+		assertEquals(4, global);
 		assertEquals(2, focused);
 		
 		helper.addPropertyChangeListener(l1);
 		helper.addPropertyChangeListener(l2);
 
 		helper.setProperty("p12.ddd", "new");
-		assertEquals(6, global);
+		assertEquals(5, global);
 		assertEquals(3, focused);
 
 		helper.setProperty("p12.ddd", "new2");
-		assertEquals(7, global);
+		assertEquals(6, global);
 		assertEquals(4, focused);
 		
 		p.setProperty("p09", "new");
 		p.setProperty("p12.ddd", "new2");
 		p.setProperty("p12", "new");
 		helper.setProperties(p);
-		assertEquals(8, global);
+		assertEquals(6, global); // no changes
 		assertEquals(4, focused);
 
 		p.setProperty("p12.ddd", "new2");
 		p.setProperty("p12.qqq", "new2");
 		p.setProperty("p12.www", "new2");
 		helper.setProperties(p);
-		assertEquals(9, global);
+		assertEquals(7, global);
 		assertEquals(5, focused);
 		
 		try 
@@ -368,8 +369,39 @@ public class PropertiesHelperTest
 		} catch (ConfigurationException expected) {/*ok*/}
 		
 	}
-
 	
+	static Boolean changeNotified = false;
+	private static final Map<String, PropertyMD> METADATA2 = new HashMap<>();
+	static 
+	{
+		METADATA2.put("p1", new PropertyMD("600").setLong());
+	}
+
+	@Test
+	public void testUpdatesWithNoChanges()
+	{
+		Properties p = new Properties();
+		p.setProperty(PREFIX+"p1", "123");
+		PropertiesHelper helper = new PropertiesHelper(PREFIX, p, METADATA2, log);
+		PropertyChangeListener l1 = new PropertyChangeListener()
+		{
+			@Override
+			public void propertyChanged(String propertyKey)
+			{
+				changeNotified=true;
+			}
+
+			@Override
+			public String[] getInterestingProperties()
+			{
+				return null;
+			}
+		};
+		helper.addPropertyChangeListener(l1);
+		p.setProperty("some other thing", "test123");
+		helper.setProperties(p);
+		assertFalse(changeNotified);
+	}
 	
 	private static Properties load(String input)
 	{
@@ -607,5 +639,6 @@ public class PropertiesHelperTest
 		f.delete();
 		CSVFormatter.main("target", PropertiesHelperTest.class.getName()+"|"+f.getName());
 		assertTrue(f.exists());
-	}	
+	}
+
 }

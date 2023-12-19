@@ -86,7 +86,7 @@ import eu.unicore.util.configuration.PropertyMD.Type;
  */
 public class PropertiesHelper implements Cloneable, UpdateableConfiguration, PropertiesHelperAPI
 {
-	private Set<String> warned = Collections.synchronizedSet(new HashSet<String>());
+	private Set<String> warned = Collections.synchronizedSet(new HashSet<>());
 	protected Logger log;
 	protected Properties properties;
 	protected String prefix;
@@ -144,13 +144,28 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 		checkConstraints(copied);
 		findUnknown(copied);
 		checkDeprecated(copied);
+		boolean different = differ(copied, this.properties);
 		Set<String> changed = filterChanged(propertyFocusedListeners.keySet(), 
 				this.properties, copied);
 		this.properties.clear();
 		this.properties.putAll(copied);
-		notifyGenericListeners();
+		if(different)notifyGenericListeners();
 		for (String changedP: changed)
 			notifyFocusedListeners(changedP);
+	}
+	
+	// check if properties have changed or not
+	private boolean differ(Properties p1, Properties p2) {
+		if(p1==null || p2==null)return true;
+		Map<String,String> m1 = new PropertyGroupHelper(PropertyGroupHelper.asMap(p1),prefix)
+				.getFilteredMap();
+		Map<String,String> m2 = new PropertyGroupHelper(PropertyGroupHelper.asMap(p2),prefix)
+				.getFilteredMap();
+		if(m1.size()!=m2.size())return true;
+		for(String k1: m1.keySet()) {
+			if(!m1.get(k1).equals(m2.get(k1)))return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -181,8 +196,8 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 	protected boolean canHaveSubkeys(String key) 
 	{
 		PropertyMD meta = getMetadata(key);
-		if (meta != null && (meta.canHaveSubkeys() || meta.getType() == Type.LIST) || 
-				meta.getType() == Type.STRUCTURED_LIST)
+		if (meta != null && (meta.canHaveSubkeys() || meta.getType() == Type.LIST || 
+				meta.getType() == Type.STRUCTURED_LIST))
 			return true;
 		return false;
 	}
@@ -429,7 +444,7 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 			}
 		}
 		
-		Set<String> mandatoryElements = new HashSet<String>();
+		Set<String> mandatoryElements = new HashSet<>();
 		for (Map.Entry<String, PropertyMD> o : metadata.entrySet())
 		{
 			PropertyMD m = o.getValue();
@@ -443,7 +458,7 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 					" must have elements");
 		for (String element: elements)
 		{
-			Set<String> presentMandatory = new HashSet<String>();
+			Set<String> presentMandatory = new HashSet<>();
 			PropertyGroupHelper helper = new PropertyGroupHelper(properties, prefix+element);
 			Iterator<String> keys = helper.keys();
 			while(keys.hasNext())
@@ -1066,7 +1081,7 @@ public class PropertiesHelper implements Cloneable, UpdateableConfiguration, Pro
 	/**
 	 * Only for use in the package
 	 */
-	Logger getLoger()
+	Logger getLogger()
 	{
 		return log;
 	}
