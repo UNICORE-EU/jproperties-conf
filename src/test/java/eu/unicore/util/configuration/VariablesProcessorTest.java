@@ -4,17 +4,16 @@
  */
 package eu.unicore.util.configuration;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hamcrest.CoreMatchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class VariablesProcessorTest
 {
@@ -26,10 +25,8 @@ public class VariablesProcessorTest
 		Properties props = new Properties();
 		props.setProperty("$var.var1", "Dynamic");
 		props.setProperty("p", "some${var1}Value");
-		
 		Properties processed = VariablesProcessor.process(props, log);
-		
-		assertThat(processed.getProperty("p"), CoreMatchers.is("someDynamicValue"));
+		assertEquals(processed.getProperty("p"), "someDynamicValue");
 	}
 
 	@Test
@@ -37,14 +34,13 @@ public class VariablesProcessorTest
 	{
 		Properties props = new Properties();
 		props.setProperty("p", "some${var2}Value");
-
 		try
 		{
 			VariablesProcessor.process(props, log);
 			fail("Should throw exception");
 		} catch (ConfigurationException e)
 		{
-			assertThat(e.getMessage(), containsString("var2"));
+			assertTrue(e.getMessage().contains("var2"));
 		}
 	}
 
@@ -53,11 +49,9 @@ public class VariablesProcessorTest
 	{
 		Properties props = new Properties();
 		props.setProperty("p", "some${java.version}Value");
-		
 		Properties processed = VariablesProcessor.process(props, log);
-		
-		assertThat(processed.getProperty("p"), CoreMatchers.is("some" + 
-				System.getProperty("java.version") + "Value"));
+		assertEquals(processed.getProperty("p"), "some" + 
+				System.getProperty("java.version") + "Value");
 	}
 
 	@Test
@@ -66,11 +60,9 @@ public class VariablesProcessorTest
 		Properties props = new Properties();
 		props.setProperty("$var.java.version", "CONFIG-DEFINED");
 		props.setProperty("p", "some${java.version}Value");
-		
 		Properties processed = VariablesProcessor.process(props, log);
-		
-		assertThat(processed.getProperty("p"), CoreMatchers.is("some" + 
-				System.getProperty("java.version") + "Value"));
+		assertEquals(processed.getProperty("p"), "some" + 
+				System.getProperty("java.version") + "Value");
 	}
 	
 	@Test
@@ -78,13 +70,10 @@ public class VariablesProcessorTest
 	{
 		Properties props = new Properties();
 		String firstEnvVar = System.getenv().keySet().iterator().next();
-		
 		props.setProperty("p", "some${" + firstEnvVar + "}Value");
-		
 		Properties processed = VariablesProcessor.process(props, log);
-		
-		assertThat(processed.getProperty("p"), CoreMatchers.is("some" + 
-				System.getenv(firstEnvVar) + "Value"));
+		assertEquals(processed.getProperty("p"), "some" + 
+				System.getenv(firstEnvVar) + "Value");
 	}
 
 }

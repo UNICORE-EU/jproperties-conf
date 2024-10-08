@@ -1,15 +1,13 @@
 package eu.unicore.util.configuration;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.hamcrest.CoreMatchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TestPropertyGroupHelper {
 
@@ -62,9 +60,9 @@ public class TestPropertyGroupHelper {
 		while (i.hasNext())
 		{
 			c++;
-			assertThat(i.next().startsWith("g2."), CoreMatchers.is(true));
+			assertTrue(i.next().startsWith("g2."));
 		}
-		assertThat(c, CoreMatchers.is(2000));
+		assertTrue(c==2000);
 	}
 	
 }

@@ -4,11 +4,10 @@
  */
 package eu.unicore.util.configuration;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -24,8 +23,7 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hamcrest.CoreMatchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PropertiesHelperTest
 {
@@ -69,14 +67,12 @@ public class PropertiesHelperTest
 		META.put("property", new PropertyMD());
 		META.put("property2", new PropertyMD());
 		META.put("property3", new PropertyMD());
-		
 		PropertiesHelper tested = new PropertiesHelper("regular.", 
 				FilePropertiesHelper.load("src/test/resources/props/base.properties"), 
 				META, log);
-		
-		assertThat(tested.getValue("property"), CoreMatchers.is("value1"));
-		assertThat(tested.getValue("property2"), CoreMatchers.is("value2"));
-		assertThat(tested.getValue("property3"), CoreMatchers.is("value3"));
+		assertEquals(tested.getValue("property"), "value1");
+		assertEquals(tested.getValue("property2"), "value2");
+		assertEquals(tested.getValue("property3"), "value3");
 	}
 	
 	@Test
@@ -84,14 +80,11 @@ public class PropertiesHelperTest
 	{
 		Map<String, PropertyMD> META = new HashMap<>();
 		META.put("p1", new PropertyMD());
-		
 		Properties props = new Properties();
 		props.setProperty("$var.var1", "Dynamic");
 		props.setProperty("regular.p1", "some${var1}Value");
-		
 		PropertiesHelper tested = new PropertiesHelper("regular.", props, META, log);
-		
-		assertThat(tested.getValue("p1"), CoreMatchers.is("someDynamicValue"));
+		assertEquals(tested.getValue("p1"), "someDynamicValue");
 	}
 	
 	@Test
@@ -104,22 +97,19 @@ public class PropertiesHelperTest
 		p.setProperty(PREFIX+"p15.1.sl4.subkey1", "b");
 		p.setProperty(PREFIX+"p15.1.sl4.subkey2", "c");
 		PropertiesHelper helper;
-
 		try
 		{
 			helper = new PropertiesHelper(PREFIX, p, METADATA, log);
 		} catch (ConfigurationException e) {
 			e.printStackTrace();
 			fail("Can't set subkey on structured list entry");
-
 			return;
 		}
-		
 		assertEquals("a", helper.getValue("p15.1.sl4"));
 		assertEquals("b", helper.getValue("p15.1.sl4.subkey1"));
 		assertEquals("c", helper.getValue("p15.1.sl4.subkey2"));
 	}
-	
+
 	@Test
 	public void testListKeys()
 	{
@@ -155,8 +145,7 @@ public class PropertiesHelperTest
 		assertEquals("l2.sss.", it.next());
 		assertEquals("l2.zz.", it.next());
 	}
-	
-	
+
 	/**
 	 * Tests structured list:
 	 *  - whether missing mandatory is detected
@@ -179,18 +168,16 @@ public class PropertiesHelperTest
 			new PropertiesHelper(PREFIX, p, METADATA, log);
 			fail("mandatory doesn't work for structured list");
 		} catch (ConfigurationException e) {
-			assertTrue(e.toString(), e.getMessage().contains("must have elements"));
+			assertTrue(e.getMessage().contains("must have elements"));
 		}
-		
 		p.setProperty(PREFIX+"p15.xxx.sl1", "asda");
 		try
 		{
 			new PropertiesHelper(PREFIX, p, METADATA, log);
 			fail("numerical keys are not enforced for structured list");
 		} catch (ConfigurationException e) {
-			assertTrue(e.toString(), e.getMessage().contains("numerical"));
+			assertTrue(e.getMessage().contains("numerical"));
 		}
-		
 		p.remove(PREFIX+"p15.xxx.sl1");
 		p.setProperty(PREFIX+"p15.44.sl1", "asda");
 		p.setProperty(PREFIX+"p15.44.sl2", "asda");
@@ -199,9 +186,8 @@ public class PropertiesHelperTest
 			new PropertiesHelper(PREFIX, p, METADATA, log);
 			fail("int type not verified");
 		} catch (ConfigurationException e) {
-			assertTrue(e.toString(), e.getMessage().contains("integer"));
+			assertTrue(e.getMessage().contains("integer"));
 		}
-		
 		p.setProperty(PREFIX+"p15.44.sl1", "asda");
 		p.setProperty(PREFIX+"p15.44.sl2", "41");
 		try
@@ -209,7 +195,7 @@ public class PropertiesHelperTest
 			new PropertiesHelper(PREFIX, p, METADATA, log);
 			fail("int bounds not verified");
 		} catch (ConfigurationException e) {
-			assertTrue(e.toString(), e.getMessage().contains("too big"));
+			assertTrue(e.getMessage().contains("too big"));
 		}
 		
 		p.remove(PREFIX+"p15.44.sl1");
@@ -219,9 +205,8 @@ public class PropertiesHelperTest
 			new PropertiesHelper(PREFIX, p, METADATA, log);
 			fail("mandatory structured list property not enforced");
 		} catch (ConfigurationException e) {
-			assertTrue(e.toString(), e.getMessage().contains("must be defined"));
+			assertTrue(e.getMessage().contains("must be defined"));
 		}
-
 		p.setProperty(PREFIX+"p15.44.sl1", "asda");
 		p.setProperty(PREFIX+"p15.44.sl2", "40");
 		p.setProperty(PREFIX+"p15.44.unknown", "40");
@@ -231,9 +216,8 @@ public class PropertiesHelperTest
 			new PropertiesHelper(PREFIX, p, METADATA, log);
 			fail("unknown entry accepted");
 		} catch (ConfigurationException e) {
-			assertTrue(e.toString(), e.getMessage().contains("unknown"));
+			assertTrue(e.getMessage().contains("unknown"));
 		}
-		
 		p.remove(PREFIX+"p15.44.unknown");
 		p.setProperty(PREFIX+"p15.1.sl1", "a");
 		p.setProperty(PREFIX+"p15.1.sl2", "4");
@@ -243,7 +227,7 @@ public class PropertiesHelperTest
 		Set<String> listkeys = helper.getStructuredListKeys("p15.");
 		assertEquals(2, listkeys.size());
 		Iterator<String> it = listkeys.iterator();
-		
+
 		String k = it.next();
 		assertEquals("a", helper.getValue(k + "sl1"));
 		assertEquals(4, (int)helper.getIntValue(k + "sl2"));
@@ -263,10 +247,10 @@ public class PropertiesHelperTest
 		assertEquals("l2", vals.get(1));
 		assertEquals("l3", vals.get(2));
 	}
-	
+
 	private int global = 0;
 	private int focused = 0;
-	
+
 	@Test
 	public void testUpdates()
 	{
