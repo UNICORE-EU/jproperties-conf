@@ -20,6 +20,7 @@
     <connection>scm:git:git://github.com/UNICORE-EU/jproperties-conf.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/UNICORE-EU/jproperties-conf.git</developerConnection>
     <url>https://github.com/UNICORE-EU/jproperties-conf</url>
+    <tag>HEAD</tag>
   </scm>
 
   <licenses>
