@@ -20,14 +20,15 @@
     <connection>scm:git:git://github.com/UNICORE-EU/jproperties-conf.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/UNICORE-EU/jproperties-conf.git</developerConnection>
     <url>https://github.com/UNICORE-EU/jproperties-conf</url>
-    <tag>HEAD</tag>
   </scm>
+
   <licenses>
     <license>
       <name>BSD</name>
       <url>https://opensource.org/licenses/BSD-3-Clause</url>
     </license>
   </licenses>
+
   <developers>
     <developer>
       <name>Krzysztof Benedyczak</name>
@@ -81,7 +82,8 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
+	    <artifactId>maven-jar-plugin</artifactId>
+	    <version>3.3.0</version>
         <configuration>
           <archive>
             <manifestEntries>
@@ -97,6 +99,11 @@
         <configuration>
           <additionalJOption>-Xdoclint:none</additionalJOption>
         </configuration>
+      </plugin>
+      <plugin>
+	    <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.7.1</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -115,7 +122,7 @@
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.7</version>
+        <version>1.6.13</version>
         <extensions>true</extensions>
         <configuration>
           <serverId>sonatype-nexus-staging</serverId>
