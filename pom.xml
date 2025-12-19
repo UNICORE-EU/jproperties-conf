@@ -10,7 +10,7 @@
   <url>https://github.com/UNICORE-EU/jproperties-conf</url>
 
   <properties>
-    <log4j.version>2.23.1</log4j.version>
+    <log4j.version>2.25.3</log4j.version>
     <junit.version>5.11.1</junit.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>11</maven.compiler.target>
