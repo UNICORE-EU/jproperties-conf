@@ -4,7 +4,7 @@
   <groupId>eu.unicore</groupId>
   <artifactId>jproperties-conf</artifactId>
   <packaging>jar</packaging>
-  <version>1.1.5-SNAPSHOT</version>
+  <version>1.1.4-SNAPSHOT</version>
   <description>App configuration framework based on Java Properties</description>
   <name>jproperties-conf</name>
   <url>https://github.com/UNICORE-EU/jproperties-conf</url>
